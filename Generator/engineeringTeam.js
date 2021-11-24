@@ -1,6 +1,11 @@
 const testingTeam = {
     lead: 'Amanda',
-    tester: 'Bill'
+    tester: 'Bill',
+    [Symbol.iterator]: function* () {
+        yield this.lead;
+        yield this.tester;
+    }
+    // Tells object how to behave when used in a for-of loop
 }
 
 const engineeringTeam = {
@@ -9,25 +14,18 @@ const engineeringTeam = {
     department: 'Engineering',
     lead: 'Jill',
     manager: 'Alex',
-    engineer: 'Dave'
+    engineer: 'Dave',
+    [Symbol.iterator]: function* () {
+        yield this.lead;
+        yield this.manager;
+        yield this.engineer;
+        yield* this.testingTeam;
+    }
 };
-
-function* TestingTeamIterator(team) {
-    yield team.lead;
-    yield team.tester;
-}
-
-function* TeamIterator(team) {
-    yield team.lead;
-    yield team.manager;
-    yield team.engineer;
-    const testingTeamGenerator = TestingTeamIterator(team.testingTeam);
-    yield* testingTeamGenerator;
-    // yield* delegates yield to another generator
-}
+//yield* delegates to another generator
 
 const names = [];
-for(let name of TeamIterator(engineeringTeam)){
+for(let name of engineeringTeam){
     names.push(name);
 }
 
