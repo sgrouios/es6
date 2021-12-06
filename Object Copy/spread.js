@@ -6,22 +6,21 @@ const user = {
     }
 }
 
-// changing address object will change original object because spread copied reference and not value
+// Shallow clone (copied memory reference of nested object)
 const copyUser = { ...user };
 copyUser.address.country = 'United States';
 
-console.log('Changing address in copy object changes original object')
+console.log('Changing address in shallow copy object changes original object')
 console.dir(`Original user: ${JSON.stringify(user)}`);
-console.dir(`Copied user: ${JSON.stringify(copyUser)}`);
+console.dir(`Shallow copied user: ${JSON.stringify(copyUser)}`);
 console.log();
 
-// Without specifically telling spread operator to shallow copy nested object, it will
-// copy the object with the nested object referenced
+// Deep clone
 user.address.country = 'Australia';
 const copyUserShallow = { ...user, address: { ...user.address } }; //create new/overwirte field called address and copy nested object values
 copyUserShallow.address.country = 'United States';
 
-console.log('Changing address in properly copied object does not alter original object')
+console.log('Changing address deep-cloned object does not alter original object')
 console.dir(`Original user: ${JSON.stringify(user)}`);
-console.dir(`Copied shallow user: ${JSON.stringify(copyUserShallow)}`);
+console.dir(`Deep-cloned user: ${JSON.stringify(copyUserShallow)}`);
 
